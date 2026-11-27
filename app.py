@@ -169,6 +169,10 @@ def virtual_tryon():
 def health():
     return jsonify(status="ok", virtual_tryon_provider="Nymbo/Virtual-Try-On", note="Free community Space; availability and queue are not guaranteed.")
 
+init_db()
+
 if __name__ == "__main__":
-    init_db()
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )

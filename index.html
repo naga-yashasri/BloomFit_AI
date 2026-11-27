@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bloomfit — Your AI Stylist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rose:#e8648f;--rose-2:#f08fb0;--deep:#b83a68;--plum:#3d1f2e;--blush:#fff4f8;--petal:#ffe3ee;--cream:#fffaf6;
+  --gold:#d9a35f;--ink:#33202a;--muted:#86707b;--line:#f3d9e4;
+  --grad:linear-gradient(135deg,#f0719b 0%,#c8457a 100%);
+  --shadow:0 20px 50px -20px rgba(184,58,104,.28);--shadow-sm:0 6px 18px -8px rgba(184,58,104,.25);
+  --serif:'Fraunces',Georgia,serif;--sans:'Plus Jakarta Sans','Segoe UI',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:var(--sans);font-size:15px;background:var(--cream);min-height:100vh;position:relative;overflow-x:hidden}
+body::before,body::after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(80px);opacity:.55}
+body::before{width:520px;height:520px;background:#ffd0e1;top:-160px;left:-140px}
+body::after{width:480px;height:480px;background:#ffe9d2;bottom:-160px;right:-120px}
+header{position:sticky;top:0;z-index:10;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 max(5%,20px);background:rgba(255,250,246,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:26px;font-weight:600;color:var(--plum);letter-spacing:-.5px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 4px 8px rgba(232,100,143,.35))}
+.logo em{font-style:italic;color:var(--rose);font-weight:400}
+.step-label{font-size:12px;font-weight:600;color:var(--deep);background:var(--petal);padding:8px 16px;border-radius:30px;letter-spacing:.3px}
+main{max-width:1060px;margin:28px auto 40px;padding:0 20px}
+.progress{height:6px;background:rgba(243,217,228,.8);border-radius:10px;margin:0 0 26px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rose-2),var(--deep));border-radius:10px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.page{display:none}
+.page.active{display:block;animation:rise .55s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:30px;padding:clamp(24px,4.5vw,48px);box-shadow:var(--shadow)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--deep);font-size:11px;letter-spacing:2.2px;font-weight:700;text-transform:uppercase}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--rose);border-radius:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;color:var(--plum);letter-spacing:-.8px}
+h1{font-size:clamp(38px,5.6vw,62px);line-height:1.04;margin:16px 0}
+h1 i,h2 i{color:var(--rose);font-style:italic}
+h2{font-size:clamp(28px,3.6vw,40px);margin:12px 0 6px;line-height:1.12}
+h3{font-size:20px;margin:0 0 12px;letter-spacing:-.3px}
+p{color:var(--muted);line-height:1.7;margin:8px 0}
+.hero{background:linear-gradient(135deg,#fff0f6 0%,#fff 55%,#ffeede 130%);position:relative;overflow:hidden}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center}
+.herowrap{position:relative}
+.heroimg{width:100%;height:470px;object-fit:cover;border-radius:26px;box-shadow:var(--shadow);display:block}
+.herowrap::before{content:"";position:absolute;inset:14px -14px -14px 14px;border:2px solid var(--rose-2);border-radius:26px;opacity:.5;z-index:-1}
+.floaty{position:absolute;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-radius:16px;padding:11px 16px;font-size:12px;font-weight:600;color:var(--plum);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:9px;animation:bob 4.5s ease-in-out infinite}
+.floaty b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--petal);color:var(--deep);font-size:13px}
+.f1{left:-22px;bottom:70px}.f2{right:-14px;top:40px;animation-delay:-2s}
+@keyframes bob{50%{transform:translateY(-9px)}}
+.perks{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px;font-size:12px;color:var(--muted);font-weight:500}
+.perks span::before{content:"✿ ";color:var(--rose)}
+.field{margin:15px 0;text-align:left}
+.field label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#6e5361;letter-spacing:.3px}
+.field input,.field select{width:100%;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;font:inherit;color:var(--ink);transition:.2s;appearance:none}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23b83a68' stroke-width='2'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
+.field input:hover,.field select:hover{border-color:#ebb6cb}
+.field input:focus,.field select:focus{outline:0;border-color:var(--rose);box-shadow:0 0 0 4px rgba(232,100,143,.15)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:40px;background:var(--grad);color:#fff;padding:14px 28px;font:600 14px var(--sans);cursor:pointer;box-shadow:0 10px 22px -8px rgba(200,69,122,.6);transition:.25s;text-decoration:none}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 26px -8px rgba(200,69,122,.7)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.6;cursor:wait;transform:none}
+.btn.alt{background:#fff;color:var(--deep);border:1.5px solid var(--line);box-shadow:none}
+.btn.alt:hover{background:var(--blush);border-color:var(--rose-2)}
+.actions{display:flex;justify-content:space-between;gap:12px;margin-top:30px;flex-wrap:wrap}
+.actions .right{margin-left:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+.choices{display:flex;flex-wrap:wrap;gap:10px}
+.choice{border:1.5px solid var(--line);padding:11px 20px;border-radius:30px;background:#fff;cursor:pointer;font:500 14px var(--sans);color:var(--ink);transition:.2s}
+.choice:hover{border-color:var(--rose-2);transform:translateY(-1px)}
+.choice.selected{background:var(--grad);border-color:transparent;color:#fff;box-shadow:var(--shadow-sm)}
+.choice.selected::before{content:"✓ ";font-weight:700}
+.hint{font-size:12px;color:#9b838e}
+.preview{width:100%;height:320px;object-fit:contain;background:repeating-conic-gradient(#fff5f9 0 25%,#fff 0 50%) 0 0/22px 22px;border:1.5px dashed #e6b3c7;border-radius:18px;margin-top:12px}
+.preview:not([src]){visibility:hidden;height:0;margin:0;border:0}
+.upload{padding:20px;border:1.5px dashed #e3a8be;border-radius:18px;background:linear-gradient(#fff9fb,#fff3f7);transition:.2s;text-align:center}
+.upload:hover{border-color:var(--rose);background:var(--blush)}
+.upload::before{content:"＋";display:grid;place-items:center;width:44px;height:44px;margin:0 auto 10px;border-radius:50%;background:var(--petal);color:var(--deep);font-size:22px;font-weight:300}
+.upload input{max-width:100%;font-size:13px;color:var(--muted)}
+.upload input::file-selector-button{border:0;background:var(--deep);color:#fff;padding:8px 16px;border-radius:20px;margin-right:10px;font:600 12px var(--sans);cursor:pointer}
+.resultbox{background:linear-gradient(135deg,#fff4f8,#fff);border:1px solid var(--line);padding:22px;border-radius:20px;margin-top:18px}
+.rec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:20px}
+.rec-tile{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow-sm);transition:.25s}
+.rec-tile:hover{transform:translateY(-3px)}
+.rec-tile.wide{grid-column:1/-1;background:linear-gradient(135deg,#fff,#fff0f6)}
+.rec-tile .ic{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--petal);font-size:18px;margin-bottom:10px}
+.rec-tile h4{margin:0 0 4px;font:700 11px var(--sans);letter-spacing:1.6px;text-transform:uppercase;color:var(--deep)}
+.rec-tile p{margin:0;font-size:14px;color:#5d4752}
+.steps{display:flex;gap:6px;margin:6px 0 4px}
+.steps i{height:4px;flex:1;border-radius:4px;background:var(--line)}
+.steps i.on{background:var(--rose)}
+.hidden{display:none!important}
+footer{text-align:center;padding:28px;color:#a68b97;font-size:12px}
+footer b{font-family:var(--serif);color:var(--deep);font-weight:600}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--plum);color:#fff;padding:14px 22px;border-radius:40px;font-size:13px;font-weight:500;display:none;box-shadow:0 14px 34px -10px rgba(61,31,46,.6);z-index:50;animation:rise .3s}
+@media(max-width:760px){
+  .split{grid-template-columns:1fr;gap:26px}.heroimg{height:320px}.grid2,.rec-grid{grid-template-columns:1fr}
+  .f1{left:8px}.f2{right:8px}.step-label{display:none}main{margin-top:18px}
+  .actions .btn{flex:1}
+}
+</style></head><body>
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#f58bb0"/><stop offset="1" stop-color="#c0407a"/></linearGradient></defs>
+      <g fill="url(#lg)"><ellipse cx="20" cy="9.5" rx="6" ry="8.5"/><ellipse cx="20" cy="30.5" rx="6" ry="8.5" opacity=".75"/><ellipse cx="9.5" cy="20" rx="8.5" ry="6" opacity=".85"/><ellipse cx="30.5" cy="20" rx="8.5" ry="6" opacity=".9"/></g><circle cx="20" cy="20" r="4.5" fill="#ffe3b8"/></svg>
+    <span>Bloom<em>fit</em></span>
+  </div>
+  <div class="step-label" id="stepLabel">Welcome · Sign in</div>
+</header>
+<main><div class="progress"><span id="bar"></span></div>
+
+<section class="page active" id="p0"><div class="card hero split">
+  <div>
+    <div class="eyebrow">Your AI personal stylist</div>
+    <h1>Dress the way you <i>bloom.</i></h1>
+    <p>Outfit ideas shaped around your fit, colors, occasion and budget — then try them on virtually before you buy.</p>
+    <div class="field"><label>Email address</label><input id="email" type="email" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input id="password" type="password" placeholder="Enter password"></div>
+    <button class="btn" onclick="signIn()">Sign in / Create account →</button>
+    <p class="hint">Prototype sign-in: enter any valid email and password. Real authentication is not connected yet.</p>
+    <div class="perks"><span>Personal style profile</span><span>Virtual try-on</span><span>Smart wardrobe</span></div>
+  </div>
+  <div class="herowrap">
+    <img class="heroimg" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=900&q=85" alt="Fashion editorial model">
+    <div class="floaty f1"><b>✨</b>AI-matched to your style</div>
+    <div class="floaty f2"><b>👗</b>Try before you buy</div>
+  </div>
+</div></section>
+
+<section class="page" id="p1"><div class="card">
+  <div class="eyebrow">Step 1 of 5</div><h2>Let's get to know your <i>fit</i></h2>
+  <p>Share details to guide size and fit suggestions. Weight or height alone cannot determine clothing size.</p>
+  <div class="grid2">
+    <div class="field"><label>Height (cm)</label><input id="height" type="number" placeholder="e.g. 165"></div>
+    <div class="field"><label>Weight (kg) (optional)</label><input id="weight" type="number" placeholder="e.g. 58"></div>
+    <div class="field"><label>Body type (optional)</label><select id="body"><option>Prefer not to say</option><option>Hourglass</option><option>Pear</option><option>Apple</option><option>Rectangle</option><option>Inverted triangle</option><option>Not sure</option></select></div>
+    <div class="field"><label>Current usual size</label><select id="size"><option>Not sure</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
+  </div>
+  <div class="field"><label>Fit preference</label><div class="choices" data-group="fit"><button class="choice selected">Regular</button><button class="choice">Relaxed</button><button class="choice">Fitted</button><button class="choice">Oversized</button></div></div>
+  <div class="actions"><button class="btn alt" onclick="go(0)">← Back</button><button class="btn right" onclick="go(2)">Continue →</button></div>
+</div></section>
+
+<section class="page" id="p2"><div class="card">
+  <div class="eyebrow">Step 2 of 5</div><h2>Your colors &amp; <i>style</i></h2>
+  <p>Choose what you enjoy wearing. Photo-based tone analysis is optional and needs a connected AI service.</p>
+  <div class="field"><label>Skin undertone (optional)</label><select id="tone"><option>Not sure</option><option>Warm</option><option>Cool</option><option>Neutral</option></select></div>
+  <div class="field"><label>Favorite colors</label><div class="choices" data-group="colors"><button class="choice">Pink</button><button class="choice">Blue</button><button class="choice">Black</button><button class="choice">White</button><button class="choice">Earth tones</button><button class="choice">Pastels</button><button class="choice">Bright colors</button></div></div>
+  <div class="field"><label>Preferred style</label><div class="choices" data-group="style"><button class="choice">Casual</button><button class="choice">Western</button><button class="choice">Traditional</button><button class="choice">Streetwear</button><button class="choice">Minimal</button><button class="choice">Fusion</button></div></div>
+  <div class="actions"><button class="btn alt" onclick="go(1)">← Back</button><button class="btn right" onclick="go(3)">Continue →</button></div>
+</div></section>
+
+<section class="page" id="p3"><div class="card">
+  <div class="eyebrow">Step 3 of 5</div><h2>Where are you <i>dressing</i> for?</h2>
+  <div class="grid2">
+    <div class="field"><label>Occasion</label><select id="occasion"><option>Everyday / College</option><option>Office / Interview</option><option>Wedding / Festival</option><option>Party</option><option>Travel</option><option>Date / Dinner</option></select></div>
+    <div class="field"><label>Total outfit budget (₹)</label><input id="budget" type="number" placeholder="e.g. 2500"></div>
+  </div>
+  <div class="field"><label>Anything else we should consider?</label><input id="notes" placeholder="Comfort, modesty, fabric preferences..."></div>
+  <div class="actions"><button class="btn alt" onclick="go(2)">← Back</button><button class="btn right" onclick="buildRec()">Create my recommendations ✨</button></div>
+</div></section>
+
+<section class="page" id="p4"><div class="card">
+  <div class="eyebrow">Your personalized direction</div><h2>Your style <i>starting point</i> ✨</h2>
+  <div id="rec"></div>
+  <p class="hint" style="margin-top:20px">These are styling suggestions, not a medical/body assessment or guaranteed size prediction. Confirm fit using the retailer's garment measurements and size chart.</p>
+  <div class="actions"><button class="btn alt" onclick="go(3)">← Edit preferences</button><button class="btn right" onclick="go(5)">Continue to virtual try-on →</button></div>
+</div></section>
+
+<section class="page" id="p5"><div class="card">
+  <div class="eyebrow">Virtual try-on · AI powered</div><h2>Try the outfit on <i>your photo</i></h2>
+  <p>Upload a clear, front-facing full-body or upper-body photo and a separate clothing product image. The AI model will attempt to transfer the garment.</p>
+  <div class="split" style="align-items:start;margin-top:18px">
+    <div><h3>Your photo</h3><div class="upload"><input id="personFile" type="file" accept="image/png,image/jpeg,image/webp" onchange="previewUpload(event,'personPreview','personName')"><p id="personName" class="hint">Choose your photo.</p></div><img id="personPreview" class="preview" alt="Your photo preview"></div>
+    <div><h3>Clothing item</h3><div class="upload"><input id="garmentFile" type="file" accept="image/png,image/jpeg,image/webp" onchange="previewUpload(event,'garmentPreview','garmentName')"><p id="garmentName" class="hint">Choose the clothing product photo.</p></div><img id="garmentPreview" class="preview" alt="Clothing preview"></div>
+  </div>
+  <div class="field"><label>Clothing description</label><input id="garmentDescription" placeholder="e.g. blue and white printed sleeveless maxi dress"></div>
+  <div class="field"><label>Garment category</label><select id="garmentCategory"><option value="overall">Dress / saree / kurti / full outfit</option><option value="upper">Top / shirt / kurti top</option><option value="lower">Trousers / skirt</option></select></div>
+  <div class="actions"><button class="btn alt" onclick="go(4)">← Back</button><button class="btn right" id="generateBtn" onclick="generateTryOn()">✨ Generate Virtual Try-On</button></div>
+  <div id="tryonStatus" class="resultbox hidden" aria-live="polite"></div>
+  <div id="tryonResult" class="hidden" style="margin-top:22px"><h3>Generated result</h3><img id="resultImage" class="preview" alt="AI generated virtual try-on result"><div class="actions"><a id="downloadResult" class="btn" download="bloomfit-tryon.png">Download result</a><button class="btn alt" onclick="saveTryOn()">Save result</button><button class="btn alt" onclick="resetTryOn()">Try another outfit</button></div></div>
+  <p class="hint" style="margin-top:20px">AI results are estimates and may alter details. Uploaded photos are sent to the configured inference provider for processing. Use photos you have permission to upload.</p>
+  <div class="actions"><span></span><button class="btn alt" onclick="go(6)">Skip to my wardrobe →</button></div>
+</div></section>
+
+<section class="page" id="p6"><div class="card">
+  <div class="eyebrow">Your wardrobe</div><h2>Make more of what you <i>own</i></h2>
+  <p>Choose photos of clothes you already own. They are saved to your local Bloomfit database; outfit matching from your wardrobe is the next step for the recommendation service.</p>
+  <div class="upload"><input type="file" accept="image/*" multiple id="wardrobeFiles"><p id="wardrobeCount" class="hint">No wardrobe photos selected.</p></div>
+  <div class="actions"><button class="btn alt" onclick="go(5)">← Back</button><button class="btn right" onclick="toast('You are all set — keep blooming! 🌸')">Finish</button></div>
+</div></section>
+</main>
+<footer><b>Bloomfit</b> · Dress the way you bloom.</footer><div id="toast"></div>
+
+<script>
+let current=0, choices={};const names=['Welcome · Sign in','Your measurements','Colors & style','Occasion & budget','Your recommendations','Virtual try-on','My wardrobe'];
+function go(n){document.getElementById('p'+current).classList.remove('active');current=n;document.getElementById('p'+n).classList.add('active');document.getElementById('stepLabel').textContent=names[n];document.getElementById('bar').style.width=(n/6*100)+'%';window.scrollTo({top:0,behavior:'smooth'})}
+async function signIn(){let e=document.getElementById('email').value,p=document.getElementById('password').value;if(!e||!e.includes('@')||!p){toast('Enter a valid email and password to continue.');return}try{let r=await fetch('/api/auth/demo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,password:p})});let d=await r.json();if(!r.ok)throw new Error(d.error||'Sign-in failed');localStorage.setItem('bloomfit_email',e);go(1)}catch(err){toast(err.message)}}
+document.querySelectorAll('.choices').forEach(group=>group.addEventListener('click',e=>{if(!e.target.classList.contains('choice'))return;let multi=group.dataset.group==='colors';if(!multi)group.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));e.target.classList.toggle('selected')}));
+function selected(group){let el=document.querySelector('[data-group="'+group+'"]');return el?[...el.querySelectorAll('.selected')].map(x=>x.textContent).join(', '):''}
+function tile(ic,title,body,wide){return `<div class="rec-tile${wide?' wide':''}"><div class="ic">${ic}</div><h4>${title}</h4><p>${body}</p></div>`}
+function buildRec(){let h=document.getElementById('height').value,w=document.getElementById('weight').value,b=document.getElementById('body').value,size=document.getElementById('size').value,t=document.getElementById('tone').value,o=document.getElementById('occasion').value,budget=document.getElementById('budget').value,style=selected('style')||'Personal choice',colors=selected('colors')||'Open to suggestions',fit=selected('fit')||'Regular';
+fetch('/api/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({height:h,weight:w,body_type:b,size:size,tone:t,occasion:o,budget:budget,style:style,colors:colors,fit:fit})}).catch(()=>{});
+const colorTxt=t==='Not sure'?'Explore a few palettes and choose what you feel good in.':'Try a palette that complements your '+t.toLowerCase()+' undertone, then adjust to your taste.';
+const fitTxt=`${fit} fit; current usual size ${size}. ${h?'Height: '+h+' cm. ':''}${w?'Weight: '+w+' kg. ':''}${b!=='Prefer not to say'?'Body shape selected: '+b+'. ':''}Use bust/chest, waist, hip and garment measurements with the specific brand chart for a better size match.`;
+document.getElementById('rec').innerHTML=`<div class="rec-grid">`+
+tile('🎀','Occasion',o)+
+tile('👗','Style direction',`${style}; preferred colors: ${colors}.`)+
+tile('🎨','Color guidance',colorTxt)+
+tile('💰','Budget',budget?'₹'+Number(budget).toLocaleString('en-IN'):'Not specified')+
+tile('📏','Fit guidance',fitTxt,true)+
+tile('💍','Complete look','Coordinate footwear and a bag with the occasion; add jewellery and makeup in a matching style. Consider pieces already in your wardrobe first.',true)+`</div>`;go(4)}
+function previewUpload(e,id,label){let f=e.target.files[0];if(!f)return;let url=URL.createObjectURL(f);document.getElementById(id).src=url;document.getElementById(label).textContent=f.name}
+async function generateTryOn(){const person=document.getElementById('personFile').files[0],garment=document.getElementById('garmentFile').files[0];if(!person||!garment){toast('Please upload both your photo and a clothing photo.');return}const btn=document.getElementById('generateBtn'),status=document.getElementById('tryonStatus'),result=document.getElementById('tryonResult');btn.disabled=true;btn.textContent='Generating… please wait';status.classList.remove('hidden');result.classList.add('hidden');status.textContent='Uploading images and contacting the free community AI model. This can take several minutes; free GPU queues may be busy.';try{const fd=new FormData();fd.append('person_image',person);fd.append('garment_image',garment);fd.append('description',document.getElementById('garmentDescription').value||'clothing item');fd.append('category',document.getElementById('garmentCategory').value);const response=await fetch('/api/tryon',{method:'POST',body:fd});const data=await response.json();if(!response.ok)throw new Error(data.error||'Virtual try-on failed');const url=data.result_url+'?t='+Date.now();document.getElementById('resultImage').src=url;document.getElementById('downloadResult').href=data.result_url;result.classList.remove('hidden');status.textContent='AI virtual try-on completed successfully.';result.scrollIntoView({behavior:'smooth',block:'start'});}catch(err){status.textContent='Could not generate the try-on: '+err.message+' You can retry later if the free model is busy.';}finally{btn.disabled=false;btn.textContent='✨ Generate Virtual Try-On'}}
+function resetTryOn(){document.getElementById('personFile').value='';document.getElementById('garmentFile').value='';document.getElementById('personPreview').removeAttribute('src');document.getElementById('garmentPreview').removeAttribute('src');document.getElementById('personName').textContent='Choose your photo.';document.getElementById('garmentName').textContent='Choose the clothing product photo.';document.getElementById('tryonResult').classList.add('hidden');document.getElementById('tryonStatus').classList.add('hidden')}
+function saveTryOn(){toast('Use Download result to keep your generated image.')}
+document.getElementById('wardrobeFiles').addEventListener('change',async e=>{const files=[...e.target.files];document.getElementById('wardrobeCount').textContent=files.length+' photo(s) selected. Uploading…';try{const fd=new FormData();files.forEach(f=>fd.append('images',f));const r=await fetch('/api/wardrobe',{method:'POST',body:fd});const d=await r.json();if(!r.ok)throw new Error(d.error);document.getElementById('wardrobeCount').textContent=d.saved+' wardrobe photo(s) saved locally.'}catch(err){document.getElementById('wardrobeCount').textContent='Selected '+files.length+' photo(s). '+err.message}});
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2800)}
+</script></body></html>
